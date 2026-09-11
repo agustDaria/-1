@@ -1,1 +1,39 @@
+import math_func
+import pyramid_func
 
+while True:
+    print("Головне меню:")
+    print("1. Обчислити значення X")
+    print("2. Побудувати числову піраміду")
+    print("0. Вихід")
+
+    choice = input("Оберіть пункт меню: ")
+
+    if choice == "1":
+        print()
+        print("Введіть значення (від 1 до 100):")
+        a = float(input("Введіть a: "))
+        b = float(input("Введіть b: "))
+
+        if 1 <= a <= 100 and 1 <= b <= 100:
+            result = math_func.calculate_x(a, b)
+            print("Результат X =", result)
+        else:
+            print("Помилка: числа мають бути від 1 до 100!")
+        print()
+
+    elif choice == "2":
+        print()
+        n = int(input("Введіть ціле число N (від 1 до 10): "))
+
+        if 1 <= n <= 10:
+            print()
+            pyramid_func.draw_pyramid(n)
+        else:
+            print("Помилка: число має бути від 1 до 10!")
+
+    elif choice == "0":
+        break
+
+    else:
+        print("Невірний пункт, спробуйте ще раз.")
