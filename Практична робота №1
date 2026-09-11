@@ -1,77 +1,53 @@
-def calculate_x(a, b):
-    """
-    Функція обчислює значення X залежно від значень a та b.
-    X = (a*3 - 5)/b,  якщо a < b
-    X = -4,           якщо a = b
-    X = (a^4 + b)/a,  якщо a > b
-    """
-    if a < b:
-        if b == 0:
-            raise ZeroDivisionError("Ділення на нуль: b не може бути 0 при a < b.")
-        x = (a * 3 - 5) / b
-    elif a == b:
-        x = -4
-    else:  # a > b
-        if a == 0:
-            raise ZeroDivisionError("Ділення на нуль: a не може бути 0 при a > b.")
-        x = (a ** 4 + b) / a
-    return x
+import sys
+from math_func import calculate_x
+from pyramid_func import draw_pyramid
 
 
-def get_number(prompt):
-    """
-    Зчитує число з клавіатури та перевіряє коректність введення.
-    Повторює запит, доки не буде введено коректне число.
-    """
+def get_bounded_number(prompt):
     while True:
-        value = input(prompt)
         try:
-            number = float(value)
-            return number
+            val = float(input(prompt))
+            if 1 <= val <= 100:
+                return val
+            print("Число має бути в межах від 1 до 100.")
         except ValueError:
-            print("Помилка: введіть, будь ласка, число.")
+            print("Введіть коректне число.")
 
 
-def build_pyramid(n):
-    """
-    Функція будує піраміду з цілих (непарних) чисел (варіант 15).
-    Аргумент n (ціле число від 1 до 10) задає кількість рядків у
-    верхній половині піраміди (найбільше число = 2*n - 1).
-    """
-    if not (1 <= n <= 10):
-        print("Помилка: N має бути в межах від 1 до 10.")
-        return
-
-    width = len(str(2 * n - 1)) + 1
-
-    rows = [list(range(2 * i - 1, 0, -2)) for i in range(1, n + 1)]
-    full_sequence = rows + rows[-2::-1]
-
-    for row in full_sequence:
-        indent = " " * (width * (n - len(row)))
-        line = "".join(f"{num:>{width}}" for num in row)
-        print(indent + line)
+def get_pyramid_n():
+    while True:
+        try:
+            val = int(input("Введіть ціле число N (від 1 до 10): "))
+            if 1 <= val <= 10:
+                return val
+            print("Число має бути від 1 до 10.")
+        except ValueError:
+            print("Введіть ціле число.")
 
 
 def main():
-    print("=== Функція 1: обчислення X ===")
-    a = get_number("Введіть a: ")
-    b = get_number("Введіть b: ")
-    try:
-        x = calculate_x(a, b)
-        print(f"X = {x}")
-    except ZeroDivisionError as e:
-        print(f"Помилка обчислення: {e}")
-
-    print("\n=== Функція 2: побудова піраміди ===")
     while True:
-        n_input = input("Введіть ціле число N (від 1 до 10): ")
-        if n_input.isdigit() and 1 <= int(n_input) <= 10:
-            n = int(n_input)
-            break
+        print("\nГоловне меню:")
+        print("1. Обчислити значення X")
+        print("2. Побудувати числову піраміду")
+        print("0. Вихід")
+
+        choice = input("Оберіть пункт меню: ").strip()
+
+        if choice == "1":
+            print("\nВведіть значення (від 1 до 100):")
+            a = get_bounded_number("Введіть a: ")
+            b = get_bounded_number("Введіть b: ")
+            res = calculate_x(a, b)
+            print(f"Результат X = {res}")
+        elif choice == "2":
+            n = get_pyramid_n()
+            print()
+            draw_pyramid(n)
+        elif choice == "0":
+            sys.exit()
         else:
-            print("Некоректне введення. Спробуйте ще раз.")
-    build_pyramid(n)
+            print("Невірний вибір. Спробуйте ще раз.")
 
 
 if __name__ == "__main__":
